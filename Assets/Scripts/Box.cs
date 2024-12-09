@@ -1,28 +1,42 @@
-﻿using UnityEngine ;
+﻿using UnityEngine;
 
+public enum Mark {
+   None,
+   X,
+   O
+}
 public class Box : MonoBehaviour {
-   public int index ;
-   public Mark mark ;
-   public bool isMarked ;
+   public int index;
+   private Mark _mark;
+   
+   
+   private SpriteRenderer _spriteRenderer;
+   private CircleCollider2D _circleCollider2D;
+   
+   private bool _isMarked;
 
-   private SpriteRenderer spriteRenderer ;
-
-   private void Awake () {
-      spriteRenderer = GetComponent<SpriteRenderer> () ;
-
-      index = transform.GetSiblingIndex () ;
-      mark = Mark.None ;
-      isMarked = false ;
+   private void Awake() {
+      _spriteRenderer = GetComponent<SpriteRenderer>();
+      _circleCollider2D = GetComponent<CircleCollider2D>();
+      
+      index = transform.GetSiblingIndex();
+      
+      _mark = Mark.None;
+      _isMarked = false;
    }
 
    public void SetAsMarked (Sprite sprite, Mark mark, Color color) {
-      isMarked = true ;
-      this.mark = mark ;
+      _isMarked = true;
+      _mark = mark;
 
-      spriteRenderer.color = color ;
-      spriteRenderer.sprite = sprite ;
+      _spriteRenderer.color = color;
+      _spriteRenderer.sprite = sprite;
 
-      //Disable the CircleCollider2D (to avoid marking it twice)
-      GetComponent<CircleCollider2D> ().enabled = false ;
+      _circleCollider2D.enabled = false;
+   }
+
+   public bool CanUseBox()
+   {
+      return _isMarked;
    }
 }

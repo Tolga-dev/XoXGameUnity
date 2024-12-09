@@ -1,11 +1,12 @@
-﻿using UnityEngine ;
+﻿using TMPro;
+using UnityEngine ;
 using UnityEngine.UI ;
 using UnityEngine.SceneManagement ;
 
 public class WinUI : MonoBehaviour {
    [Header ("UI References :")]
    [SerializeField] private GameObject uiCanvas ;
-   [SerializeField] private Text uiWinnerText ;
+   [SerializeField] private TextMeshProUGUI uiWinnerText ;
    [SerializeField] private Button uiRestartButton ;
 
    [Header ("Board Reference :")]
