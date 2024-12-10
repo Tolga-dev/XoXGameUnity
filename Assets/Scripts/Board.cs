@@ -1,6 +1,8 @@
 ﻿using System;
 using GameStates;
 using Managers;
+using PopUps;
+using UI.PopUps;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,14 +29,13 @@ public class Board : MonoBehaviour
       _lineRenderer = GetComponent<LineRenderer>();
       _gameManager = GameManager.Instance;
       _inGameState = (InGameState)_gameManager.GetState<InGameState>();
-      
+
       InitBoard();
    }
    
    private void InitBoard()
    {
       _lineRenderer.enabled = false;
-      _lineRenderer.positionCount = 0;
       marks = new Mark[9];
    }
 
@@ -65,7 +66,7 @@ public class Board : MonoBehaviour
       var won = CheckIfWin();
       if (won)
       {
-         SetGameFinished();
+         SetGameWinner();
          return;
       }
       if (_marksCount == 9) {
@@ -77,13 +78,20 @@ public class Board : MonoBehaviour
 
    private void SetGameNoWinner()
    {
-      Debug.Log ("Nobody Wins.");
+      _inGameState.SetGameNoWinner();
+      SetGameFinished();
+   }
+   private void SetGameWinner()
+   {
+      _inGameState.SetGameWinner();
+      SetGameFinished();
    }
 
    private void SetGameFinished()
    {
+      InitBoard();
       Debug.Log("Exit From Game State");
-      Debug.Log (_inGameState.currentPlayer + " Wins.");
+      Debug.Log("Play Game Finished Music");
    }
 
    private bool CheckIfWin() {
@@ -116,4 +124,6 @@ public class Board : MonoBehaviour
 
    private Player CurrentPlayer => _inGameState.currentPlayer;
    private Mark CurrentMark => _inGameState.currentPlayer.mark;
+   private PopUpController popUpController => _gameManager.popUpController;
+
 }

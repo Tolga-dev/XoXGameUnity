@@ -15,6 +15,11 @@ namespace GameStates
             gameManager.popUpController.Show<PopUpInGame>();
         }
 
+        public override void Enter()
+        {
+            GameManager.SwitchStates<InGameState>();
+        }
+
         public override void Update()
         {
             base.Update();

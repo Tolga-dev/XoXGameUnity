@@ -20,17 +20,24 @@ namespace GameStates
         [Header ("Player Configurations : ")]
         public List<Player> players = new List<Player>();
         public Player currentPlayer;
+        
         public override void Starter(GameManager gameManager)
         {
             base.Starter(gameManager);
             board.Starter();
             _cam = Camera.main;
         }
-        
+
+        public override void Enter()
+        {
+            currentPlayer = GetRandomPlayer();
+        }
+
         public override void Update()
         {
-            if (CanPlay())
+            if (IsClicked())
             {
+                Debug.Log("Clicked");
                 var hit = GetHit();
                 if (hit)
                     board.HitBox (hit.GetComponent <Box>());
@@ -66,9 +73,26 @@ namespace GameStates
             currentPlayer = GetPlayerFromMark(Mark.O);
         }
         
-        public bool CanPlay()
+        public bool IsClicked()
         {
             return Input.GetMouseButtonUp(0);
+        }
+        
+        public void SetGameWinner()
+        {
+            PlayWinnerAnimation();
+        }
+
+        private void PlayWinnerAnimation()
+        {
+            Debug.Log($"Play Winner Animation + {currentPlayer.mark}");
+            
+            GameManager.SwitchStates<UIState>();
+        }
+
+        public void SetGameNoWinner()
+        {
+            Debug.Log($"Play No Winner Animation + {currentPlayer.mark}");
         }
     }
 }

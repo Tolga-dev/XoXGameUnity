@@ -6,7 +6,6 @@ using GameStates;
 using So;
 using UI.PopUps;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Managers
 {
@@ -14,8 +13,8 @@ namespace Managers
     {
         private GameStateBase _currentState;
         
-        private UIState _uIState;
-        private InGameState _inGameState;
+        [SerializeField]private UIState uIState;
+        [SerializeField] private InGameState inGameState;
         
         public PopUpController popUpController;
         public SoundController soundController;
@@ -27,14 +26,14 @@ namespace Managers
         {
             _states = new Dictionary<Type, GameStateBase>
             {
-                { typeof(UIState), _uIState },
-                { typeof(InGameState), _inGameState }
+                { typeof(UIState), uIState },
+                { typeof(InGameState), inGameState }
             };
 
-            _inGameState.Starter(this);
-            _uIState.Starter(this);
+            inGameState.Starter(this);
+            uIState.Starter(this);
 
-            SwitchState(_uIState);
+            SwitchState(uIState);
         }
 
         public void Update()
