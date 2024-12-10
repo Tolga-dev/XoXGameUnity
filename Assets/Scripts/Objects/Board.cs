@@ -34,8 +34,24 @@ public class Board : MonoBehaviour
       _inGameState = (InGameState)_gameManager.GetState<InGameState>();
 
       InitBoard();
+      SetBoardSize();
    }
+
+   private void SetBoardSize()
+   {
+      Camera mainCamera = Camera.main;
+
+      float screenWidth = mainCamera.orthographicSize * 2 * mainCamera.aspect / 4.5f;
+
+      Vector3 boardScale = transform.localScale;
+
+      boardScale.x = screenWidth;
+      boardScale.y = screenWidth;
    
+      transform.localScale = boardScale;
+   }
+
+
    private void InitBoard()
    {
       _lineRenderer.enabled = false;
