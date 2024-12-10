@@ -1,74 +1,63 @@
-﻿using UnityEngine;
+﻿using System;
+using GameStates;
+using Managers;
+using UnityEngine;
 using UnityEngine.Events;
 
-public class Board : MonoBehaviour {
-   [Header ("Mark Sprites : ")]
-   [SerializeField] private Sprite spriteX;
-   [SerializeField] private Sprite spriteO;
+[Serializable]
+public class Player
+{
+   public Sprite sprite;   
+   public Color color;
+   public Mark mark;
+}
+
+public class Board : MonoBehaviour
+{
+   private GameManager _gameManager;
+   private InGameState _inGameState;
    
    [Header ("Components")]
-   private Camera _cam;
    private LineRenderer _lineRenderer;
-   
-   [Header ("Input Settings : ")]
-   [SerializeField] private LayerMask boxesLayerMask;
-   [SerializeField] private float touchRadius;
-
-   [Header ("Mark Colors : ")]
-   [SerializeField] private Color colorX;
-   [SerializeField] private Color colorO;
-
-   public UnityAction<Mark,Color> OnWinAction;
 
    public Mark[] marks;
-   private Mark _currentMark;
    private int _marksCount = 0;
-   
-   private bool _canPlay;
 
-   private void Start() {
-      _cam = Camera.main;
+   public void Starter() {
       _lineRenderer = GetComponent<LineRenderer>();
-
-      InitGame();
+      _gameManager = GameManager.Instance;
+      _inGameState = (InGameState)_gameManager.GetState<InGameState>();
+      
+      InitBoard();
    }
-
-   private void InitGame()
+   
+   private void InitBoard()
    {
       _lineRenderer.enabled = false;
-      _currentMark = Mark.X;
+      _lineRenderer.positionCount = 0;
       marks = new Mark[9];
-      _canPlay = true;
    }
 
-   private void Update() {
-      if (CanPlay()) {
-         var touchPosition = _cam.ScreenToWorldPoint (Input.mousePosition);
-         var hit = Physics2D.OverlapCircle (touchPosition, touchRadius, boxesLayerMask);
-         
-         if (hit)
-            HitBox (hit.GetComponent <Box>());
-      }
-   }
-
-   private bool CanPlay()
-   {
-      return _canPlay && Input.GetMouseButtonUp(0);
-   }
-
-   private void HitBox (Box box) {
+   public void HitBox (Box box) {
+      
+      Debug.Log("Play Hit Music");
+      
       if (!box.CanUseBox())
       {
+         Debug.Log("Play Draw Music");
+      
          SetCurrentBox(box);
          CheckWin();
       }
+      
    }
 
    private void SetCurrentBox(Box box)
    {
-      marks[box.index] = _currentMark;
-      box.SetAsMarked (GetSprite(), _currentMark, GetColor());
+      marks[box.index] = CurrentPlayer.mark;
       _marksCount++;
+      
+      box.SetAsMarked (CurrentPlayer);
    }
 
    private void CheckWin()
@@ -83,22 +72,18 @@ public class Board : MonoBehaviour {
          SetGameNoWinner();
          return;
       }
-      
-      SwitchPlayer();
+      _inGameState.SwitchPlayer();
    }
 
    private void SetGameNoWinner()
    {
-      OnWinAction?.Invoke (Mark.None, Color.white);
       Debug.Log ("Nobody Wins.");
-      _canPlay = false;
    }
 
    private void SetGameFinished()
    {
-      OnWinAction?.Invoke (_currentMark, GetColor());
-      _canPlay = false;
-      Debug.Log (_currentMark + " Wins.");
+      Debug.Log("Exit From Game State");
+      Debug.Log (_inGameState.currentPlayer + " Wins.");
    }
 
    private bool CheckIfWin() {
@@ -109,7 +94,7 @@ public class Board : MonoBehaviour {
    }
 
    private bool AreBoxesMatched (int i, int j, int k) {
-      var m = _currentMark;
+      var m = CurrentMark;
       var matched = (marks [ i ] == m && marks [ j ] == m && marks [ k ] == m);
 
       if (matched)
@@ -121,7 +106,7 @@ public class Board : MonoBehaviour {
    private void DrawLine (int i, int k) {
       _lineRenderer.SetPosition (0, transform.GetChild (i).position);
       _lineRenderer.SetPosition (1, transform.GetChild (k).position);
-      Color color = GetColor();
+      Color color = CurrentPlayer.color;
       color.a = .3f;
       
       _lineRenderer.startColor = color;
@@ -129,15 +114,6 @@ public class Board : MonoBehaviour {
       _lineRenderer.enabled = true;
    }
 
-   private void SwitchPlayer() {
-      _currentMark = (_currentMark == Mark.X) ? Mark.O : Mark.X;
-   }
-
-   private Color GetColor() {
-      return (_currentMark == Mark.X) ? colorX : colorO;
-   }
-
-   private Sprite GetSprite() {
-      return (_currentMark == Mark.X) ? spriteX : spriteO;
-   }
+   private Player CurrentPlayer => _inGameState.currentPlayer;
+   private Mark CurrentMark => _inGameState.currentPlayer.mark;
 }

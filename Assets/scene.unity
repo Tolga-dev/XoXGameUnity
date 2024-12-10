@@ -369,8 +369,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   touchRadius: 0.2
-  colorX: {r: 1, g: 0.25735295, b: 0.9180526, a: 1}
-  colorO: {r: 0.24264705, g: 1, b: 1, a: 1}
+  colorX: {r: 0.2588235, g: 1, b: 0.9426416, a: 1}
+  colorO: {r: 1, g: 0.316262, b: 0.24313724, a: 1}
   marks: 
 --- !u!120 &117994699
 LineRenderer:
