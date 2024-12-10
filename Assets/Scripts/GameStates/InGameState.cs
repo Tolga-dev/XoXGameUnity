@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Controllers;
 using Managers;
 using PopUps;
 using UnityEngine;
@@ -45,6 +46,12 @@ namespace GameStates
                 var hit = GetHit();
                 if (hit)
                     board.HitBox (hit.GetComponent <Box>());
+                else
+                {
+                    CameraShakeController.Instance.TriggerShake(0.01f, 0.1f);
+                    Debug.Log("Play Cant Music");
+                }
+                    
             }
         }
 

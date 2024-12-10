@@ -58,7 +58,7 @@ public class Board : MonoBehaviour
          SetCurrentBox(box);
          CheckWin();
       }
-      
+   
    }
 
    private void SetCurrentBox(Box box)
