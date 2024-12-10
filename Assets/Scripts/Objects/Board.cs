@@ -54,12 +54,13 @@ public class Board : MonoBehaviour
       if (!box.CanUseBox())
       {
          Debug.Log("Play Draw Music");
+         _gameManager.fxController.CreateEffects(box);
       
          SetCurrentBox(box);
          CheckWin();
       }
-   
    }
+
 
    private void SetCurrentBox(Box box)
    {

@@ -16,9 +16,8 @@ namespace Controllers
             originalPosition= camera.transform.localPosition;
         }
 
-        public IEnumerator Shake(float duration, float magnitude)
+        private IEnumerator Shake(float duration, float magnitude)
         {
-
             float elapsed = 0f;
 
             while (elapsed < duration)

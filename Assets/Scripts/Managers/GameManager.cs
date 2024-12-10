@@ -17,10 +17,11 @@ namespace Managers
         
         public PopUpController popUpController;
         public SoundController soundController;
+        public FxController fxController;
+        
+
         public GamePlayConfigurations gamePlayConfigurations;
-
         private Dictionary<Type, GameStateBase> _states;
-
         public void Start()
         {
             _states = new Dictionary<Type, GameStateBase>
@@ -28,7 +29,10 @@ namespace Managers
                 { typeof(UIState), uIState },
                 { typeof(InGameState), inGameState }
             };
+            
             popUpController.Starter();
+            soundController.Starter(this);
+            fxController.Starter(this);
             
             inGameState.Starter(this);
             uIState.Starter(this);
@@ -65,4 +69,6 @@ namespace Managers
         }
 
     }
+
+  
 }
