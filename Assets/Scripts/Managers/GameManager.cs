@@ -4,7 +4,6 @@ using Controllers;
 using Core;
 using GameStates;
 using So;
-using UI.PopUps;
 using UnityEngine;
 
 namespace Managers
@@ -29,10 +28,11 @@ namespace Managers
                 { typeof(UIState), uIState },
                 { typeof(InGameState), inGameState }
             };
-
+            popUpController.Starter();
+            
             inGameState.Starter(this);
             uIState.Starter(this);
-
+            
             SwitchState(uIState);
         }
 

@@ -27,6 +27,13 @@ public class Box : MonoBehaviour {
       _circleCollider2D.enabled = false;
    }
 
+   public void ResetBox()
+   {
+      _isMarked = false;
+      _spriteRenderer.sprite = null;
+      _circleCollider2D.enabled = true;
+   }
+
    public bool CanUseBox()
    {
       return _isMarked;

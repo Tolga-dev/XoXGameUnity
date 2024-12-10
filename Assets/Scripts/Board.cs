@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using Controllers;
 using GameStates;
 using Managers;
 using PopUps;
-using UI.PopUps;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,8 @@ public class Board : MonoBehaviour
    public Mark[] marks;
    private int _marksCount = 0;
 
+   public List<Box> boxes = new List<Box>();
+
    public void Starter() {
       _lineRenderer = GetComponent<LineRenderer>();
       _gameManager = GameManager.Instance;
@@ -37,6 +40,11 @@ public class Board : MonoBehaviour
    {
       _lineRenderer.enabled = false;
       marks = new Mark[9];
+      _marksCount = 0;
+      foreach (var box in boxes)
+      {
+         box.ResetBox();
+      }
    }
 
    public void HitBox (Box box) {
@@ -79,15 +87,14 @@ public class Board : MonoBehaviour
    private void SetGameNoWinner()
    {
       _inGameState.SetGameNoWinner();
-      SetGameFinished();
    }
    private void SetGameWinner()
    {
+      _lineRenderer.enabled = true;
       _inGameState.SetGameWinner();
-      SetGameFinished();
    }
 
-   private void SetGameFinished()
+   public void SetGameFinished()
    {
       InitBoard();
       Debug.Log("Exit From Game State");

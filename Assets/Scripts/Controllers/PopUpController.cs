@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Managers;
 using SoScripts;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace UI.PopUps
+namespace Controllers
 {
     [Serializable]
     public class PopUpController

@@ -1,7 +1,6 @@
 using System;
 using Managers;
 using PopUps;
-using UI.PopUps;
 using UnityEngine;
 
 namespace GameStates
@@ -12,12 +11,12 @@ namespace GameStates
         public override void Starter(GameManager gameManager)
         {
             base.Starter(gameManager);
-            gameManager.popUpController.Show<PopUpInGame>();
         }
 
         public override void Enter()
         {
             GameManager.SwitchStates<InGameState>();
+            GameManager.popUpController.Show<PopUpInGame>();
         }
 
         public override void Update()
